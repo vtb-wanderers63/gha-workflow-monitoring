@@ -1,0 +1,13 @@
+name: 'Workflow Run Monitoring'
+description: ''
+inputs:
+  input: # id of input
+    description: ''
+    required: true
+    default: ''
+outputs:
+  output: # id of output
+    description: ''
+runs:
+  using: 'node20'
+  main: 'index.js'

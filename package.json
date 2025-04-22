@@ -1,0 +1,28 @@
+{
+  "name": "workflow-monitoring-gha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vtb-wanderers63/gha-workflow-monitoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vtb-wanderers63/gha-workflow-monitoring/issues"
+  },
+  "homepage": "https://github.com/vtb-wanderers63/gha-workflow-monitoring#readme",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
+    "octokit": "^4.1.3"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3"
+  }
+}

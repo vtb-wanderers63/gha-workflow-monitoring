@@ -1,0 +1,31 @@
+name: Workflow Run Monitoring
+
+on:
+  workflow_dispatch:
+    inputs:
+      owner:
+        description: 'Owner of the repository where the workflow is located'
+        required: false
+        default: 'vtb-wanderers63'
+      repo:
+        description: 'Repository name where the workflow is located'
+        required: false
+        default: 'gha-python-external-scripts'
+      workflow_run_id:
+        description: 'The ID or file name of the workflow to trigger'
+        required: true
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger workflow_dispatch
+        id: trigger
+        uses: vtb-wanderers63/gha-workflow-monitoring@main
+        with:
+          workflow_run_id: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.workflow_run_id }}
+          repo: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repo || 'gha-python-external-scripts' }}
+          owner: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.owner || 'vtb-wanderers63' }}
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}

@@ -1,13 +1,65 @@
-name: 'Workflow Run Monitoring'
-description: ''
+name: 'Workflow Run Monitor'
+description: 'This GHA monitors the status of a workflow run.'
+author: 'vtb-wanderers63'
+
 inputs:
-  input: # id of input
-    description: ''
+  owner:
+    description: 'Owner of the repository where the workflow is located (defaults to current repo owner)'
+    required: false
+  repo:
+    description: 'Repository name where the workflow is located (defaults to current repo)'
+    required: false
+  workflow_run_id:
+    description: 'The ID or file name of the workflow to trigger'
     required: true
-    default: ''
+  app_id:
+    description: 'The github app appId'
+    required: true
+  private_key:
+    description: 'The github app private key'
+    required: true
 outputs:
-  output: # id of output
-    description: ''
+  workflow_run_status:
+    description: 'The ID of the triggered workflow run'
+    value: '${{ steps.workflow-dispatch.outputs.run_id }}'
+  workflow_run_status_message:
+    description: 'The ID of the triggered workflow run'
+    value: '${{ steps.workflow-dispatch.outputs.run_id }}'
+
 runs:
-  using: 'node20'
-  main: 'index.js'
+  using: 'composite'
+  steps:
+    - name: Generate GitHub App Token
+      uses: actions/create-github-app-token@v1
+      id: app-token
+      with:
+        app-id: ${{ inputs.app_id }}
+        private-key: ${{ inputs.private_key }}
+        owner: ${{ inputs.owner }}
+        repositories: |
+          ${{ inputs.repo }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        npm ci
+
+    - name: Run workflow dispatch
+      shell: bash
+      id: workflow-run-monitoring
+      run: node ${{ github.action_path }}/dist/index.js
+      env:
+        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        OWNER: ${{ inputs.owner }}
+        REPO: ${{ inputs.repo }}
+        WORKFLOW_RUN_ID: ${{ inputs.workflow_run_id }}
+
+branding:
+  icon: 'play'
+  color: 'blue'

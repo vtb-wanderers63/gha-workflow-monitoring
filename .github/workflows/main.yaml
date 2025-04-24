@@ -4,24 +4,27 @@ on:
   workflow_dispatch:
     inputs:
       owner:
-        description: 'Owner of the repository where the workflow is located'
+        description: 'Owner of the repository where the workflow is running'
         required: false
         default: 'vtb-wanderers63'
       repo:
-        description: 'Repository name where the workflow is located'
+        description: 'Repository name where the workflow is running'
         required: false
         default: 'gha-python-external-scripts'
       workflow_run_id:
-        description: 'The ID or file name of the workflow to trigger'
+        description: 'The workflow run id to monitor'
         required: true
+      monitoring_duration:
+        description: 'The duration in minutes to monitor the workflow run'
+        required: false
+        default: '8'
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Trigger workflow_dispatch
-        id: trigger
+      - name: Workflow Run Monitoring
+        id: workflow_run_monitor
         uses: vtb-wanderers63/gha-workflow-monitoring@main
         with:
           workflow_run_id: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.workflow_run_id }}
@@ -29,3 +32,8 @@ jobs:
           owner: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.owner || 'vtb-wanderers63' }}
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
+      - name: Print output
+        run: |
+          echo "Workflow Run ID: ${{ steps.workflow_run_monitor.outputs.workflow_run_id }}"
+          echo "Workflow Run Status: ${{ steps.workflow_run_monitor.outputs.workflow_run_status }}"
+          echo "Workflow Run Status Message: ${{ steps.workflow_run_monitor.outputs.workflow_run_status_message }}"

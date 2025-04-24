@@ -1,5 +1,5 @@
 name: 'Workflow Run Monitor'
-description: 'This GHA monitors the status of a workflow run.'
+description: 'This GHA monitors the status of a workflow run for a given duration.'
 author: 'vtb-wanderers63'
 
 inputs:
@@ -12,6 +12,10 @@ inputs:
   workflow_run_id:
     description: 'The ID or file name of the workflow to trigger'
     required: true
+  monitoring_duration:
+    description: 'The duration in minutes to monitor the workflow run'
+    required: false
+    default: '8'
   app_id:
     description: 'The github app appId'
     required: true
@@ -21,10 +25,10 @@ inputs:
 outputs:
   workflow_run_status:
     description: 'The ID of the triggered workflow run'
-    value: '${{ steps.workflow-dispatch.outputs.run_id }}'
+    value: '${{ steps.workflow-run-monitoring.outputs.workflow_run_status }}'
   workflow_run_status_message:
     description: 'The ID of the triggered workflow run'
-    value: '${{ steps.workflow-dispatch.outputs.run_id }}'
+    value: '${{ steps.workflow-run-monitoring.outputs.workflow_run_status_message }}'
 
 runs:
   using: 'composite'

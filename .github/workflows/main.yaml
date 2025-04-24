@@ -34,6 +34,6 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Print output
         run: |
-          echo "Workflow Run ID: ${{ steps.workflow_run_monitor.outputs.workflow_run_id }}"
+          echo "Workflow Run ID: ${{ github.event.inputs.workflow_run_id }}"
           echo "Workflow Run Status: ${{ steps.workflow_run_monitor.outputs.workflow_run_status }}"
           echo "Workflow Run Status Message: ${{ steps.workflow_run_monitor.outputs.workflow_run_status_message }}"

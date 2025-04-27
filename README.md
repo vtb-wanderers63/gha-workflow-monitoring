@@ -8,7 +8,7 @@ Useful for setting up chains of workflows where you need to wait for one workflo
 
 - Monitors a workflow run until it completes, fails, or times out.
 - Authenticates securely using a GitHub App token.
-- Outputs the final workflow status and conclusion message.
+- Outputs the final workflow status, workflow run url and conclusion message.
 
 ## Inputs
 
@@ -27,6 +27,7 @@ Useful for setting up chains of workflows where you need to wait for one workflo
 |:-----|:------------|
 | `workflow_run_status` | Status of the monitored workflow (`completed`, `failed`, or `timeout`) |
 | `workflow_run_status_message` | A message describing the outcome |
+| `workflow_run_url` | The workflow run url |
 
 ## Example Usage
 
@@ -54,3 +55,4 @@ jobs:
         run: |
           echo "Workflow Run Status: ${{ steps.monitor.outputs.workflow_run_status }}"
           echo "Workflow Run Message: ${{ steps.monitor.outputs.workflow_run_status_message }}"
+          echo "Workflow Run Message: ${{ steps.monitor.outputs.workflow_run_url }}"

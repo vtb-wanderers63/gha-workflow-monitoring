@@ -65,9 +65,11 @@ async function run() {
         // Check status and take appropriate action
         if (status === 'completed') {
           if (conclusion === 'success') {
+            core.setOutput('workflow_run_url', workflowRun.url);
             core.setOutput('workflow_run_status', 'completed');
             core.setOutput('workflow_run_status_message', 'Workflow run completed successfully');
           } else {
+            core.setOutput('workflow_run_url', workflowRun.url);
             core.setOutput('workflow_run_status', 'failed');
             core.setOutput(
               'workflow_run_status_message',
@@ -80,6 +82,7 @@ async function run() {
           await new Promise((resolve) => setTimeout(resolve, checkIntervalMs));
         } else {
           // Unexpected status
+          core.setOutput('workflow_run_url', workflowRun.url);
           core.setOutput('workflow_run_status', 'failed');
           core.setOutput(
             'workflow_run_status_message',

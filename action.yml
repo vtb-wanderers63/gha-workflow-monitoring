@@ -29,6 +29,9 @@ outputs:
   workflow_run_status_message:
     description: 'The ID of the triggered workflow run'
     value: '${{ steps.workflow-run-monitoring.outputs.workflow_run_status_message }}'
+  workflow_run_url:
+    description: 'The URL of the triggered workflow run'
+    value: '${{ steps.workflow-run-monitoring.outputs.workflow_run_url }}'
 
 runs:
   using: 'composite'
